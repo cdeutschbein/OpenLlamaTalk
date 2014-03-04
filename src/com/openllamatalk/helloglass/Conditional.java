@@ -12,6 +12,8 @@ package com.openllamatalk.helloglass;
 
 public class PosCond {
 
+
+/* Given a PoS array returns a list of the indices of the ends of sentences */
   public List<Integer> sentenceBreaks(String[] all_pos) {
     int prevalenceRate = 0.098834;
     int arrLen = all_pos.length
@@ -33,7 +35,7 @@ public class PosCond {
     return retValues;
   }
     
-
+/* maps posCond onto a PoS array */
   List<Double> mappedPosCond(String[] all_pos) {
     int i;
     List<Double> posConds = new ArrayList<Double>();
@@ -43,6 +45,7 @@ public class PosCond {
     return posConds;
   }
 
+/* Gives conditional probability of a sentence break between posBefore and posAfter */
   double posCond(String posBefore, String posAfter) {
     if (posBefore.equals("PERIOD"))
       else
