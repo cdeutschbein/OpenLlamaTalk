@@ -12,19 +12,46 @@ package com.openllamatalk.helloglass;
 
 public class PosCond {
 
+  public char grader(int totalSentences, int grammarErrors, int fillers)
+    double grade;
+    double prevalenceRate = 0.098834;
+    /* Gain a rough estimate as word number */
+    /* This also has the positive side effect of rewarding sentence complexity / information density */
+    int totalWords = (int)((double)totalSentences/prevalenceRate)
+    /* Count grammarErrors as 2 errors as they arise from problems between at least two words */
+    grade = 2.0 * (double)grammarErrors;
+    /* Vocal fillers are a single error each */
+    grade += (double)fillers;
+    /* but fillers also reduce relative sentence length */
+    totalWords -= fillers;
+    /* Compute grade as a percentage */
+    grade /= (double)totalWords;
+    /* Convert to a letter using social conventions */
+    if (grade > .9) {
+      return 'A';
+    } 
+    if (grade > .8) {
+      return 'B';
+    }
+    if (grade > .7) {
+      return 'C';
+    }
+    if (grade > .6) {
+      return 'D';
+    }
+    return 'F';
+  }
 
 /* Given a PoS array returns a list of the indices of the ends of sentences */
   public List<Integer> sentenceBreaks(String[] all_pos) {
-    int prevalenceRate = 0.098834;
+    double prevalenceRate = 0.098834; /* Average rate of sentence breaks */
     int arrLen = all_pos.length
-    int tar = (int)(prevalenceRate * (double)arrLen)); /* maybe this should turn into len/10 */
-    int curr = 0;
-    double criticalValue = prevalenceRate;
+    int tar = (int)(prevalenceRate * (double)arrLen)); /* Target number of sentence breaks */
     List<Double> posConds = mappedPosCond(all_pos);
-    List<toSort> toSort = new ArrayList<Double>(posConds);
+    List<Double> toSort = new ArrayList<Double>(posConds);
     Collections.sort(toSort);
     Collections.reverse(toSort);
-    double pivot = toSort.get(tar);
+    double pivot = toSort.get(tar); /* Gives conditional probability break point for this array */
     List<Integer> retValues = new ArrayList<Integer>();
     for (int i = 0; i < arrLen; i++) {
       double e = list.get(i);
